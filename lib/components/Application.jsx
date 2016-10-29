@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import UserInput from './userinput.jsx'
 
 
 export default class Application extends Component {
@@ -16,6 +17,7 @@ export default class Application extends Component {
       <div>
         <h1>Number Guesser</h1>
         <p>{this.state.randomNumber}</p>
+        <UserInput />
       </div>
     )
   }
