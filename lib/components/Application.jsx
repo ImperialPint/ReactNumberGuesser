@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import UserInput from './userinput.jsx'
+import Range from './range.jsx'
 
 
 export default class Application extends Component {
@@ -7,8 +8,8 @@ export default class Application extends Component {
     super()
     this.state = {
       randomNumber: (Math.floor(Math.random() * 100 - 1)),
-      max: 100,
-      min: 1
+      max: parseInt('100'),
+      min: parseInt('1')
     }
   }
 
@@ -16,8 +17,9 @@ export default class Application extends Component {
     return(
       <div>
         <h1>Number Guesser</h1>
-        <p>{this.state.randomNumber}</p>
         <UserInput />
+        <Range />
+        <p>{this.state.randomNumber}</p>
       </div>
     )
   }

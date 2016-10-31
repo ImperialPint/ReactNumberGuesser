@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { UserGuess } from './UserGuess'
 
 export default class UserInput extends Component {
   constructor() {
@@ -7,10 +8,13 @@ export default class UserInput extends Component {
       guess: ''
     }
   }
+
   render(){
     return(
       <div>
-        <input placeholder="Typer your guess here"/>
+        <UserGuess />
+        <SubmitGuess />
+        <p>You have guessed: {this.state.guess}</p>
       </div>
     )
   }
