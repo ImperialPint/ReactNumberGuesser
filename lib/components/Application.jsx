@@ -36,14 +36,46 @@ export default class Application extends Component {
       this.clearGuessInput()
       console.log('hello');
     } else {
-      this.compareToRange()
+      this.compareToMin()
       this.clearGuessInput()
     }
   }
 
-  compareToRange() {
+  compareToMin() {
     if (parseInt(this.state.guess) < this.state.min) {
-      this.setState({ feedback: "w00t!"})
+      this.setState({ feedback: "Your number is outside the minimum range of the current game."})
+    } else {
+      this.compareToMax()
+    }
+  }
+
+  compareToMax() {
+    if(parseInt(this.state.guess) > this.state.max){
+      this.setState({ feedback: "Your number is outside the maximum range of the current game."})
+    } else {
+      this.compareToRandomHigh()
+    }
+  }
+
+  compareToRandomHigh() {
+    if(parseInt(this.state.guess) > this.state.randomNumber){
+      this.setState({ feedback: 'Your guess is too high. Guess again!'})
+    } else {
+      this.compareToRandomLow()
+    }
+  }
+
+  compareToRandomLow() {
+    if(parseInt(this.state.guess) < this.state.randomNumber) {
+      this.setState({ feedback: 'Your guess is too low. Guess again!'})
+    } else {
+      this.compareToWin()
+    }
+  }
+
+  compareToWin() {
+    if(parseInt(this.state.guess) == this.state.randomNumber){
+      this.setState({ feedback: 'JACKPOT'})
     }
   }
 
@@ -59,6 +91,7 @@ export default class Application extends Component {
         <SubmitButton submitGuess={this.submitGuess.bind(this)}/>
         <Range />
         <p>{this.state.randomNumber}</p>
+        <p>{this.state.feedback}</p>
       </div>
     )
   }
