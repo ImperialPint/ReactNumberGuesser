@@ -8191,7 +8191,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(470);
+	__webpack_require__(473);
 	
 	(0, _reactDom.render)(_react2.default.createElement(_Application2.default, null), document.getElementById('application'));
 
@@ -29388,14 +29388,25 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _react = __webpack_require__(299);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _UserGuess = __webpack_require__(470);
+	
+	var _SubmitButton = __webpack_require__(471);
+	
+	var _range = __webpack_require__(472);
+	
+	var _range2 = _interopRequireDefault(_range);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var React = __webpack_require__(299);
-	var ReactDOM = __webpack_require__(331);
 	
 	var Application = function (_Component) {
 	  _inherits(Application, _Component);
@@ -29406,28 +29417,122 @@
 	    var _this = _possibleConstructorReturn(this, (Application.__proto__ || Object.getPrototypeOf(Application)).call(this));
 	
 	    _this.state = {
-	      randomNumber: ''
+	      guess: '',
+	      prevGuess: '',
+	      randomNumber: '',
+	      feedback: '',
+	      max: 100,
+	      min: 1
 	    };
 	    return _this;
 	  }
 	
 	  _createClass(Application, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.createRando();
+	    }
+	  }, {
+	    key: 'createRando',
+	    value: function createRando() {
+	      this.setState({ randomNumber: Math.floor(Math.random() * 100)
+	      });
+	    }
+	  }, {
+	    key: 'updateGuess',
+	    value: function updateGuess(e) {
+	      this.setState({ guess: e.target.value });
+	    }
+	  }, {
+	    key: 'submitGuess',
+	    value: function submitGuess() {
+	      if (isNaN(parseInt(this.state.guess))) {
+	        this.setState({ feedback: 'Your guess is not a valid number. Please guess again.' });
+	        this.clearGuessInput();
+	        console.log('hello');
+	      } else {
+	        this.compareToMin();
+	        this.clearGuessInput();
+	      }
+	    }
+	  }, {
+	    key: 'compareToMin',
+	    value: function compareToMin() {
+	      if (parseInt(this.state.guess) < this.state.min) {
+	        this.setState({ feedback: "Your number is outside the minimum range of the current game." });
+	      } else {
+	        this.compareToMax();
+	      }
+	    }
+	  }, {
+	    key: 'compareToMax',
+	    value: function compareToMax() {
+	      if (parseInt(this.state.guess) > this.state.max) {
+	        this.setState({ feedback: "Your number is outside the maximum range of the current game." });
+	      } else {
+	        this.compareToRandomHigh();
+	      }
+	    }
+	  }, {
+	    key: 'compareToRandomHigh',
+	    value: function compareToRandomHigh() {
+	      if (parseInt(this.state.guess) > this.state.randomNumber) {
+	        this.setState({ feedback: 'Your guess is too high. Guess again!' });
+	      } else {
+	        this.compareToRandomLow();
+	      }
+	    }
+	  }, {
+	    key: 'compareToRandomLow',
+	    value: function compareToRandomLow() {
+	      if (parseInt(this.state.guess) < this.state.randomNumber) {
+	        this.setState({ feedback: 'Your guess is too low. Guess again!' });
+	      } else {
+	        this.compareToWin();
+	      }
+	    }
+	  }, {
+	    key: 'compareToWin',
+	    value: function compareToWin() {
+	      if (parseInt(this.state.guess) == this.state.randomNumber) {
+	        this.setState({ feedback: 'JACKPOT' });
+	      }
+	    }
+	  }, {
+	    key: 'clearGuessInput',
+	    value: function clearGuessInput() {
+	      this.setState({ guess: '' });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return React.createElement(
+	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        React.createElement(
+	        _react2.default.createElement(
 	          'h1',
 	          null,
-	          'Please tell me this is the text that appears.'
+	          'Number Guesser'
+	        ),
+	        _react2.default.createElement(_UserGuess.UserGuess, { value: this.state.guess, updateGuess: this.updateGuess.bind(this) }),
+	        _react2.default.createElement(_SubmitButton.SubmitButton, { submitGuess: this.submitGuess.bind(this) }),
+	        _react2.default.createElement(_range2.default, null),
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          this.state.randomNumber
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          this.state.feedback
 	        )
 	      );
 	    }
 	  }]);
 	
 	  return Application;
-	}(Component);
+	}(_react.Component);
 	
 	exports.default = Application;
 
@@ -29435,13 +29540,129 @@
 /* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.UserGuess = undefined;
+	
+	var _react = __webpack_require__(299);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var UserGuess = exports.UserGuess = function UserGuess(_ref) {
+	  var updateGuess = _ref.updateGuess,
+	      value = _ref.value;
+	
+	  return _react2.default.createElement("input", {
+	    className: "guees-input",
+	    value: value,
+	    placeholder: "Type your guess here",
+	    type: "number",
+	    onChange: updateGuess
+	  });
+	};
+
+/***/ },
+/* 471 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.SubmitButton = undefined;
+	
+	var _react = __webpack_require__(299);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var SubmitButton = exports.SubmitButton = function SubmitButton(_ref) {
+	  var submitGuess = _ref.submitGuess;
+	
+	  return _react2.default.createElement(
+	    "button",
+	    {
+	      type: "submit",
+	      onClick: submitGuess
+	    },
+	    "Guess"
+	  );
+	};
+
+/***/ },
+/* 472 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(299);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Range = function (_Component) {
+	  _inherits(Range, _Component);
+	
+	  function Range() {
+	    _classCallCheck(this, Range);
+	
+	    var _this = _possibleConstructorReturn(this, (Range.__proto__ || Object.getPrototypeOf(Range)).call(this));
+	
+	    _this.state = {
+	      min: '',
+	      max: ''
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(Range, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement('input', { type: 'number', placeholder: 'Minimum' }),
+	        _react2.default.createElement('input', { type: 'number', placeholder: 'Maximum' })
+	      );
+	    }
+	  }]);
+	
+	  return Range;
+	}(_react.Component);
+	
+	exports.default = Range;
+
+/***/ },
+/* 473 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(471);
+	var content = __webpack_require__(474);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(473)(content, {});
+	var update = __webpack_require__(476)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -29458,10 +29679,10 @@
 	}
 
 /***/ },
-/* 471 */
+/* 474 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(472)();
+	exports = module.exports = __webpack_require__(475)();
 	// imports
 	
 	
@@ -29472,7 +29693,7 @@
 
 
 /***/ },
-/* 472 */
+/* 475 */
 /***/ function(module, exports) {
 
 	/*
@@ -29528,7 +29749,7 @@
 
 
 /***/ },
-/* 473 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
