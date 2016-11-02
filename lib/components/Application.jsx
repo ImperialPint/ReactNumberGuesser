@@ -3,6 +3,7 @@ import { UserGuess } from './UserGuess'
 import { SubmitButton } from './SubmitButton'
 import { NumberRange } from './NumberRange.jsx'
 import { ResetGame } from './ResetGame'
+import { ClearButton } from './ClearButton'
 
 
 export default class Application extends Component {
@@ -10,12 +11,15 @@ export default class Application extends Component {
     super()
     this.state = {
       guess: '',
-      prevGuess: '',
       randomNumber: '',
       feedback: '',
       max: 100,
       min: 1
     }
+  }
+
+  clearGuess() {
+    this.setState({ guess: '' })
   }
 
   componentDidMount() {
@@ -65,7 +69,7 @@ export default class Application extends Component {
 
   compareToRandomHigh() {
     if(parseInt(this.state.guess) > this.state.randomNumber){
-      this.setState({ feedback: 'Your guess is too high. Guess again!'})
+      this.setState({ feedback: 'Guess lower.'})
     } else {
       this.compareToRandomLow()
     }
@@ -73,7 +77,7 @@ export default class Application extends Component {
 
   compareToRandomLow() {
     if(parseInt(this.state.guess) < this.state.randomNumber) {
-      this.setState({ feedback: 'Your guess is too low. Guess again!'})
+      this.setState({ feedback: 'Guess higher.'})
     } else {
       this.compareToWin()
     }
@@ -81,7 +85,7 @@ export default class Application extends Component {
 
   compareToWin() {
     if(parseInt(this.state.guess) == this.state.randomNumber){
-      this.setState({ feedback: 'JACKPOT'})
+      this.setState({ feedback: 'You guessed correctly!'})
       this.winChangeRange();
       this.createRando();
     }
@@ -110,15 +114,39 @@ export default class Application extends Component {
   }
 
   render(){
+    let toggleDisable = false
+    if (!this.state.guess){
+      toggleDisable = true
+    }
+    let toggleRange = true
+    if(this.state.feedback == "You guessed correctly!"){
+      toggleRange = false
+    }
     return(
-      <div>
+      <div className="woot">
         <h1>Number Guesser</h1>
-        <UserGuess value={this.state.guess} updateGuess={this.updateGuess.bind(this)}/>
-        <SubmitButton submitGuess={this.submitGuess.bind(this)}/>
-        <ResetGame resetGamez={this.resetGame.bind(this)}/>
-        <NumberRange minValue={this.state.min} maxValue={this.state.max} submitMinMax={this.setUserMinMax.bind(this)} userMin={this.userMin.bind(this)} userMax={this.userMax.bind(this)}/>
-        <p>{this.state.randomNumber}</p>
-        <p>{this.state.feedback}</p>
+        <UserGuess
+          value={ this.state.guess }
+          updateGuess={ this.updateGuess.bind(this) }
+        />
+        <ClearButton
+          clear={ this.clearGuess.bind(this) }
+          toggleDisable={ toggleDisable }
+        />
+        <SubmitButton
+          toggleDisable={ toggleDisable }
+          submitGuess={ this.submitGuess.bind(this) }
+        />
+        <NumberRange
+          toggleRange={ toggleRange }
+          minValue={ this.state.min }
+          maxValue={ this.state.max }
+          submitMinMax={ this.setUserMinMax.bind(this) }
+          userMin={ this.userMin.bind(this) }
+          userMax={ this.userMax.bind(this) }
+        />
+        <p className="feedback">{ this.state.feedback }</p>
+        <ResetGame resetGamez={ this.resetGame.bind(this) }/>
       </div>
     )
   }
