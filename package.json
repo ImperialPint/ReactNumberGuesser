@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ImperialPint/weatherly.git"
+    "url": "git+https://github.com/andrewlcrist/weatherly.git"
   },
   "author": "Andrew Crist",
   "license": "MIT",
